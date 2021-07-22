@@ -1,0 +1,147 @@
+<%@page import="models.Transactions"%>
+<%@page import="dao.PaymentDao"%>
+<%@page import="dbcon.FactoryProvider"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<%@page import="java.util.List"%>
+<%@page import="models.Account"%>
+<%@page import="models.Customer"%>
+<%@page import="dao.AccountDao"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>List Transaction</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="css/mystyle.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>  
+        table{  
+            border-collapse: collapse;  
+            width: 100%;   
+        }  
+    th,td{  
+        border: 2px solid black;   
+        padding: 15px;  
+    }  
+               
+    </style>  
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark primary-background">
+		<a class="navbar-brand" href="index.jsp"> <span
+			class="fa fa-asterisk"></span> Home
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a class="nav-link" href="profile.jsp"> <span
+						class="	fa fa-bell-o"></span> Payment Options </a>
+				</li>
+              </ul>
+				<ul class="navbar-nav mr-right">
+					<li class="nav-item active"><a class="nav-link"
+						href="listaccounts.jsp"> <span class="	fa fa-bell-o"></span>
+							List Account </a></li>
+
+
+
+				</ul>
+
+				<ul class="navbar-nav mr-right">
+					<li class="nav-item active"><a class="nav-link"
+						href="createaccount.jsp"> <span class="	fa fa-bell-o"></span>
+							Create Account <span class="sr-only">(current)</span></a></li>
+                </ul>
+					<ul class="navbar-nav mr-right">
+						<li class="nav-item active"><a class="nav-link"
+							href="listtransaction.jsp"> <span class="	fa fa-bell-o"></span>
+								List Transaction</a></li>
+						<li class="nav-item"><a class="nav-link" href="LogoutServlet">
+								<span class="fa fa-user-plus "></span> Logout
+						</a></li>
+					</ul>
+		</div>
+	</nav>
+	<div class="card-header primary-background text-white text-center">
+							<span class="fa fa-list fa-3x"></span> <br>
+							<p>Transaction List</p>
+						</div>
+<div class="row">
+  <table style="width:100%">
+  <tr>
+  <th> Transaction Id</th>
+  <th> Account Id</th>
+  <th> Customer Id</th>
+  <th> Transaction Type</th>
+  <th> Transaction Date</th>
+  
+  </tr>
+<% 
+Customer user = (Customer) session.getAttribute("currentUser");
+if (user == null) {
+    response.sendRedirect("login.jsp");
+}
+PaymentDao d = new PaymentDao(FactoryProvider.getFactory());
+List<Transactions> l = null;
+   l = d.getTransactionByCustId(user.getId());
+   
+   
+    
+
+for (Transactions t : l) {
+    %>
+
+    
+        
+        <tr>
+            <td><%= t.getId() %></td>
+            <td><%= t.getAccountid() %></td>
+            <td><%= t.getCustomerid() %></td>
+            <td><%= t.getTranactiontype() %></td>
+            <td><%= t.getDate() %></td>
+            
+        </tr>
+         
+    
+    <%
+        }
+        
+
+    %>
+  </table>
+           
+   </br>
+  
+</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</html>
